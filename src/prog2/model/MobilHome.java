@@ -19,7 +19,7 @@ public class MobilHome extends Casa {
 
     @Override
     public boolean correcteFuncionament() {
-        return this.terrassaBarbacoa;
+        return terrassaBarbacoa;
     }
 
     @Override
