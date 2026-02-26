@@ -24,6 +24,6 @@ public class MobilHome extends Casa {
 
     @Override
     public String toString() {
-        return super.toString() + ", terrassaBarbacoa = " + terrassaBarbacoa;
+        return super.toString() + " MobilHome{terrassaBarbacoa=" + terrassaBarbacoa + "}";
     }
 }

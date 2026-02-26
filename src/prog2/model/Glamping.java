@@ -34,6 +34,6 @@ public class Glamping extends Casa {
 
     @Override
     public String toString() {
-        return super.toString() + ", de " + material + ", casaMascota = " + casaMascota;
+        return super.toString() + " Glamping{material=" + material + ", casaMascota=" + casaMascota + "}";
     }
 }
