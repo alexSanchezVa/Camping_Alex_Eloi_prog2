@@ -4,15 +4,15 @@ public class Bungalow extends Casa{
 
     private int placesParquing;
     private boolean terrassa;
-    private boolean tv;
+    private boolean tele;
     private boolean aireFred;
 
-    public Bungalow(String nom, String id, String mida, int habitacions, int persones, int placesParquing, boolean terrassa, boolean tv, boolean aireFred) {
+    public Bungalow(String nom, String id, String mida, int habitacions, int persones, int placesParquing, boolean terrassa, boolean tele, boolean aireFred) {
 
         super(nom, id, mida, habitacions, persones, 4, 7);
         this.placesParquing = placesParquing;
         this.terrassa = terrassa;
-        this.tv = tv;
+        this.tele = tele;
         this.aireFred = aireFred;
     }
 
@@ -32,12 +32,12 @@ public class Bungalow extends Casa{
         this.terrassa = terrassa;
     }
 
-    public boolean isTv() {
-        return tv;
+    public boolean isTele() {
+        return tele;
     }
 
-    public void setTv(boolean tv) {
-        this.tv = tv;
+    public void setTele(boolean tele) {
+        this.tele = tele;
     }
 
     public boolean isAireFred() {
@@ -50,6 +50,11 @@ public class Bungalow extends Casa{
 
     @Override
     public boolean correcteFuncionament() {
-        return false;
+        return aireFred;
+    }
+
+    @Override
+    public String toString() {
+        return super.toString() +", "+ placesParquing + "places de pàrquing, terrassa = " + terrassa + ", televisio = " + tele + ", aire fred = " + aireFred;
     }
 }
