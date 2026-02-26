@@ -7,6 +7,13 @@ public abstract class Allotjament implements InAllotjament{
     private long estadaMinimaALTA;
     private long estadaMinimaBAIXA;
 
+    public Allotjament(String nom, String id, long estadaMinimaBAIXA, long estadaMinimaALTA) {
+        this.nom = nom;
+        this.id = id;
+        this.estadaMinimaALTA = estadaMinimaALTA;
+        this.estadaMinimaBAIXA = estadaMinimaBAIXA;
+    }
+
     /**
      * Obté el nom de l'allotjament.
      * @return el nom de l'allotjament.
@@ -69,10 +76,8 @@ public abstract class Allotjament implements InAllotjament{
      */
     public abstract boolean correcteFuncionament();
 
+    @Override
     public String toString() {
-        return "Nom=" + nom + ", Id=" + id +
-                ", estada mínima en temp ALTA: " + estadaMinimaALTA +
-                ", estada mínima en temp BAIXA: " + estadaMinimaBAIXA;
+        return "Nom=" + nom + ", Id=" + id + ", estada mínima en temp ALTA: " + estadaMinimaALTA + ", estada mínima en temp BAIXA: " + estadaMinimaBAIXA + ".";
     }
-
 }

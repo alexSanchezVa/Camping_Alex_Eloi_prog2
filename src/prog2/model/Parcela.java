@@ -1,13 +1,12 @@
 package prog2.model;
 
-public class Parcela extends Allotjament{
+public class Parcela extends Allotjament {
 
     private float mida;
     private boolean connexioElectrica;
 
     public Parcela(String nom, String id, float mida, boolean connexioElectrica) {
-        setNom(nom);
-        setId(id);
+        super(nom, id, 2, 4);
         this.mida = mida;
         this.connexioElectrica = connexioElectrica;
     }
@@ -28,16 +27,17 @@ public class Parcela extends Allotjament{
         this.connexioElectrica = connexioElectrica;
     }
 
-    public boolean correcteFuncionament(){
-        if(connexioElectrica){
+    @Override
+    public boolean correcteFuncionament() {
+        if (connexioElectrica) {
             return true;
-        }
-        else{
+        } else {
             return false;
         }
     }
 
+    @Override
     public String toString() {
-        return "";
+        return super.toString() + " Parcela{mida=" + mida + ", connexioElectrica=" + connexioElectrica + "}";
     }
 }
