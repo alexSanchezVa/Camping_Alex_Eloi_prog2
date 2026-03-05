@@ -2,6 +2,7 @@ package prog2.model;
 
 public class Bungalow extends Casa{
 
+    // Atributs
     private int placesParquing;
     private boolean terrassa;
     private boolean tele;
@@ -16,6 +17,7 @@ public class Bungalow extends Casa{
         this.aireFred = aireFred;
     }
 
+    // Getters i Setters
     public int getPlacesParquing() {
         return placesParquing;
     }
@@ -48,11 +50,13 @@ public class Bungalow extends Casa{
         this.aireFred = aireFred;
     }
 
+    // Funciona si hi ha aire fred
     @Override
     public boolean correcteFuncionament() {
         return aireFred;
     }
 
+    // Afegeix la informació del Bungalow
     @Override
     public String toString() {
         return super.toString() + " Bungalow{placesParquing=" + placesParquing + ", terrassa=" + terrassa + ", televisio=" + tele + ", aireFred=" + aireFred + "}";
