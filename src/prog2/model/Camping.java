@@ -59,16 +59,16 @@ public class Camping implements InCamping{
     }
 
     public void afegirGlamping(String nom_, String idAllotjament_, String mida, int habitacions, int placesPersones, String material, boolean casaMascota) {
-        allotjaments.add(new Gampling(nom_, idAllotjament_, mida, habitacions, placesPersones, material, casaMascota));
+        allotjaments.add(new Glamping(nom_, idAllotjament_, mida, habitacions, placesPersones, material, casaMascota));
     }
 
     public void afegirMobilHome(String nom_, String idAllotjament_, String mida, int habitacions, int placesPersones, boolean terrassaBarbacoa) {
         allotjaments.add(new MobilHome(nom_, idAllotjament_, mida, habitacions, placesPersones, terrassaBarbacoa));
     }
 
-    public void afegirReserva(String id_, String dni_, LocalDate dataEntrada, LocalDate dataSortida) throws ExcepcioReserva {
+    private Allotjament buscarAllotjament(String id_) throws ExcepcioReserva{
         Iterator<Allotjament> itr = allotjaments.iterator();
-        Allotjament allotjament;
+        Allotjament allotjament = null;
         boolean error = true;
         while (itr.hasNext()) {
             if(itr.next().getId().equals(id_)){
@@ -77,11 +77,15 @@ public class Camping implements InCamping{
             }
         }
         if(error){
-            throw new ExcepcioReserva("No existeix aquest allotjament");
+            throw new ExcepcioReserva("L'allotjament amb id " + id_ + " no existeix");
         }
+        return allotjament;
+    }
+
+    private Client buscarClient(String dni_) throws ExcepcioReserva{
         Iterator<Client> itra = clients.iterator();
-        Client client;
-        error = true;
+        Client client= null;
+         boolean error = true;
         while (itra.hasNext()) {
             if(itra.next().getDni().equals(dni_)){
                 client = itra.next();
@@ -89,9 +93,13 @@ public class Camping implements InCamping{
             }
         }
         if(error){
-            throw new ExcepcioReserva("No existeix aquest client");
+            throw new ExcepcioReserva("El client amb DNI "  + dni_ + " no existeix");
         }
-        reserves.afegirReserva(allotjament, client, dataEntrada, dataSortida);
+        return client;
+    }
+
+    public void afegirReserva(String id_, String dni_, LocalDate dataEntrada, LocalDate dataSortida) throws ExcepcioReserva{
+        reserves.afegirReserva(buscarAllotjament(id_), buscarClient(dni_), dataEntrada, dataSortida);
     }
 
     public int calculAllotjamentsOperatius() {
@@ -107,7 +115,7 @@ public class Camping implements InCamping{
 
     public Allotjament getAllotjamentEstadaMesCurta(InAllotjament.Temp temp) {
         Iterator<Allotjament> itr = allotjaments.iterator();
-        Allotjament allotjament;
+        Allotjament allotjament = null;
         long min = Long.MAX_VALUE;
         while (itr.hasNext()) {
             if(itr.next().getEstadaMinima(temp) < min) {
@@ -117,5 +125,27 @@ public class Camping implements InCamping{
 
         }
         return allotjament;
+    }
+
+    public static InAllotjament.Temp getTemporada(LocalDate data){
+        int dia = data.getDayOfMonth();
+        int mes = data.getMonthValue();
+        if(mes == 3){
+            if (dia > 21){
+                return InAllotjament.Temp.ALTA;
+            } else {
+                return InAllotjament.Temp.BAIXA;
+            }
+        } else if(mes == 9){
+            if  (dia > 21){
+                return InAllotjament.Temp.BAIXA;
+            } else{
+                return InAllotjament.Temp.ALTA;
+            }
+        } else if (mes > 3 && mes < 9){
+            return InAllotjament.Temp.ALTA;
+        } else{
+            return InAllotjament.Temp.BAIXA;
+        }
     }
 }
