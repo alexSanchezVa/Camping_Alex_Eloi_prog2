@@ -53,6 +53,6 @@ public class Reserva implements InReserva{
     }
 
     public void setDataSortida(LocalDate dataSortida_){
-        dataEntrada = dataSortida_;
+        dataSortida = dataSortida_;
     }
 }

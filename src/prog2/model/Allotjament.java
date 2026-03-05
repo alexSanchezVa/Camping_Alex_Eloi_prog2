@@ -9,7 +9,7 @@ public abstract class Allotjament implements InAllotjament{
     private long estadaMinimaBAIXA;
 
     // Constructor
-    public Allotjament(String nom, String id, long estadaMinimaBAIXA, long estadaMinimaALTA) {
+    public Allotjament(String nom, String id, long estadaMinimaALTA, long estadaMinimaBAIXA) {
         this.nom = nom;
         this.id = id;
         this.estadaMinimaALTA = estadaMinimaALTA;
