@@ -12,7 +12,9 @@ public class Camping implements InCamping{
     private ArrayList<Client> clients;
     private LlistaReserves reserves;
 
-
+    public Camping(String nom){
+        this.nom=nom;
+    }
 
     public String getNom() {
         return nom;
