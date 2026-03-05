@@ -3,23 +3,28 @@ package prog2.model;
 import prog2.vista.ExcepcioReserva;
 
 import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
+import java.util.Iterator;
 
 public class LlistaReserves implements InLlistaReserves{
+    private ArrayList<Reserva> reserves;
 
-    /**
-     * Comprova que l'estada que es demani sigui més llarga o igual que l'estada mínima.
-     * Comprova que l'allotjament estigui disponible pels dies indicats.
-     * En cas afirmatiu, crea la reserva i l’afegeix a la llista de reserves del camping.
-     * En cas negatiu, llança una excepció de tipus ExceptionReserva amb el missatge d'error.
-     *
-     * @param allotjament
-     * @param client
-     * @param dataEntrada
-     * @param dataSortida
-     * @throws ExcepcioReserva
-     */
+    //Es dona per soposat que la temporada es calcula amb la data de entrada
     public void afegirReserva(Allotjament allotjament, Client client, LocalDate dataEntrada, LocalDate dataSortida) throws ExcepcioReserva{
-
+        if(!isEstadaMinima(allotjament, dataEntrada, dataSortida)){
+            throw new ExcepcioReserva("No es compleix amb l'estada mínima");
+        }
+        Iterator<Reserva> itr = reserves.iterator();
+        Reserva reserva = null;
+        while (itr.hasNext()){
+            reserva = itr.next();
+            if(reserva.getAllotjament_().equals(allotjament) &&
+                    ChronoUnit.DAYS.between(reserva.getDataEntrada(), dataSortida) > 0 &&
+                    ChronoUnit.DAYS.between(reserva.getDataSortida(), dataEntrada) < 0){
+                throws new ExcepcioReserva("L'allotjament no esta disponible en aquest periode")
+            }
+        }
     }
 
     /**
@@ -29,4 +34,10 @@ public class LlistaReserves implements InLlistaReserves{
     public int getNumReserves(){
         return 0;
     }
+}
+
+public boolean isEstadaMinima(Allotjament allotjament, LocalDate dataEntrada, LocalDate dataSortida){
+    int estadaMinima = allotjament.getEstadaMinima(Camping.getTemporada(dataEntrada);
+    long estada = ChronoUnit.DAYS.between(dataEntrada, dataSortida);
+    return estada >= estadaMinima;
 }
