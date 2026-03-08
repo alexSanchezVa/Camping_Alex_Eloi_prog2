@@ -6,14 +6,17 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Iterator;
 
-public class Camping implements InCamping{
+public class Camping implements InCamping {
     private String nom;
     private ArrayList<Allotjament> allotjaments;
     private ArrayList<Client> clients;
     private LlistaReserves reserves;
 
-    public Camping(String nom){
-        this.nom=nom;
+    public Camping(String nom) {
+        this.nom = nom;
+        this.allotjaments = new ArrayList<>();
+        this.clients = new ArrayList<>();
+        this.reserves = new LlistaReserves();
     }
 
     public String getNom() {
@@ -45,62 +48,60 @@ public class Camping implements InCamping{
     }
 
     public void afegirClient(String nom_, String dni_) {
-        clients.add(new Client(nom_,dni_));
+        clients.add(new Client(nom_, dni_));
     }
 
     public void afegirParcela(String nom_, String idAllotjament_, float metres, boolean connexioElectrica) {
-        allotjaments.add(new Parcela(nom_,idAllotjament_, metres, connexioElectrica));
+        allotjaments.add(new Parcela(nom_, idAllotjament_, metres, connexioElectrica));
     }
 
-    public void afegirBungalow(String nom_, String idAllotjament_, String mida, int habitacions, int placesPersones, int placesParquing, boolean terrassa, boolean tv, boolean aireFred) {
-        allotjaments.add(new Bungalow(nom_, idAllotjament_, mida, habitacions, placesPersones, placesParquing, terrassa, tv, aireFred));
+    public void afegirBungalow(String nom_, String idAllotjament_, String mida, int habitacions,
+                               int placesPersones, int placesParquing, boolean terrassa, boolean tv, boolean aireFred) {
+        allotjaments.add(new Bungalow(nom_, idAllotjament_, mida, habitacions, placesPersones,
+                placesParquing, terrassa, tv, aireFred));
     }
 
-    public void afegirBungalowPremium(String nom_, String idAllotjament_, String mida, int habitacions, int placesPersones, int placesParquing, boolean terrassa, boolean tv, boolean aireFred, boolean serveisExtra, String codiWifi) {
-        allotjaments.add(new BungalowPremium(nom_, idAllotjament_, mida, habitacions, placesPersones, placesParquing, terrassa, tv, aireFred, serveisExtra, codiWifi));
+    public void afegirBungalowPremium(String nom_, String idAllotjament_, String mida, int habitacions,
+                                      int placesPersones, int placesParquing, boolean terrassa, boolean tv, boolean aireFred,
+                                      boolean serveisExtra, String codiWifi) {
+        allotjaments.add(new BungalowPremium(nom_, idAllotjament_, mida, habitacions, placesPersones,
+                placesParquing, terrassa, tv, aireFred, serveisExtra, codiWifi));
     }
 
-    public void afegirGlamping(String nom_, String idAllotjament_, String mida, int habitacions, int placesPersones, String material, boolean casaMascota) {
+    public void afegirGlamping(String nom_, String idAllotjament_, String mida, int habitacions,
+                               int placesPersones, String material, boolean casaMascota) {
         allotjaments.add(new Glamping(nom_, idAllotjament_, mida, habitacions, placesPersones, material, casaMascota));
     }
 
-    public void afegirMobilHome(String nom_, String idAllotjament_, String mida, int habitacions, int placesPersones, boolean terrassaBarbacoa) {
+    public void afegirMobilHome(String nom_, String idAllotjament_, String mida, int habitacions,
+                                int placesPersones, boolean terrassaBarbacoa) {
         allotjaments.add(new MobilHome(nom_, idAllotjament_, mida, habitacions, placesPersones, terrassaBarbacoa));
     }
 
-    private Allotjament buscarAllotjament(String id_) throws ExcepcioReserva{
+    private Allotjament buscarAllotjament(String id_) throws ExcepcioReserva {
         Iterator<Allotjament> itr = allotjaments.iterator();
-        Allotjament allotjament = null;
-        boolean error = true;
         while (itr.hasNext()) {
-            if(itr.next().getId().equals(id_)){
-                allotjament = itr.next();
-                error = false;
+            Allotjament a = itr.next();
+            if (a.getId().equals(id_)) {
+                return a;
             }
         }
-        if(error){
-            throw new ExcepcioReserva("L'allotjament amb id " + id_ + " no existeix");
-        }
-        return allotjament;
+        throw new ExcepcioReserva("L'allotjament amb id " + id_ + " no existeix");
     }
 
-    private Client buscarClient(String dni_) throws ExcepcioReserva{
-        Iterator<Client> itra = clients.iterator();
-        Client client= null;
-         boolean error = true;
-        while (itra.hasNext()) {
-            if(itra.next().getDni().equals(dni_)){
-                client = itra.next();
-                error = false;
+    private Client buscarClient(String dni_) throws ExcepcioReserva {
+        Iterator<Client> itr = clients.iterator();
+        while (itr.hasNext()) {
+            Client c = itr.next();
+            if (c.getDni().equals(dni_)) {
+                return c;
             }
         }
-        if(error){
-            throw new ExcepcioReserva("El client amb DNI "  + dni_ + " no existeix");
-        }
-        return client;
+        throw new ExcepcioReserva("El client amb DNI " + dni_ + " no existeix");
     }
 
-    public void afegirReserva(String id_, String dni_, LocalDate dataEntrada, LocalDate dataSortida) throws ExcepcioReserva{
+    public void afegirReserva(String id_, String dni_, LocalDate dataEntrada, LocalDate dataSortida)
+            throws ExcepcioReserva {
         reserves.afegirReserva(buscarAllotjament(id_), buscarClient(dni_), dataEntrada, dataSortida);
     }
 
@@ -108,7 +109,7 @@ public class Camping implements InCamping{
         Iterator<Allotjament> itr = allotjaments.iterator();
         int result = 0;
         while (itr.hasNext()) {
-            if(itr.next().correcteFuncionament()) {
+            if (itr.next().correcteFuncionament()) {
                 result++;
             }
         }
@@ -116,37 +117,34 @@ public class Camping implements InCamping{
     }
 
     public Allotjament getAllotjamentEstadaMesCurta(InAllotjament.Temp temp) {
-        Iterator<Allotjament> itr = allotjaments.iterator();
-        Allotjament allotjament = null;
-        long min = Long.MAX_VALUE;
-        while (itr.hasNext()) {
-            if(itr.next().getEstadaMinima(temp) < min) {
-                allotjament = itr.next();
-                min = allotjament.getEstadaMinima(temp);
-            }
-
+        if (allotjaments.isEmpty()) {
+            return null;
         }
-        return allotjament;
+        Iterator<Allotjament> itr = allotjaments.iterator();
+        Allotjament millor = itr.next();
+        long min = millor.getEstadaMinima(temp);
+        while (itr.hasNext()) {
+            Allotjament actual = itr.next();
+            long estada = actual.getEstadaMinima(temp);
+            if (estada < min) {
+                millor = actual;
+                min = estada;
+            }
+        }
+        return millor;
     }
 
-    public static InAllotjament.Temp getTemporada(LocalDate data){
+    public static InAllotjament.Temp getTemporada(LocalDate data) {
         int dia = data.getDayOfMonth();
         int mes = data.getMonthValue();
-        if(mes == 3){
-            if (dia > 21){
-                return InAllotjament.Temp.ALTA;
-            } else {
-                return InAllotjament.Temp.BAIXA;
-            }
-        } else if(mes == 9){
-            if  (dia > 21){
-                return InAllotjament.Temp.BAIXA;
-            } else{
-                return InAllotjament.Temp.ALTA;
-            }
-        } else if (mes > 3 && mes < 9){
+
+        if (mes == 3) {
+            return (dia >= 21) ? InAllotjament.Temp.ALTA : InAllotjament.Temp.BAIXA;
+        } else if (mes == 9) {
+            return (dia <= 20) ? InAllotjament.Temp.ALTA : InAllotjament.Temp.BAIXA;
+        } else if (mes > 3 && mes < 9) {
             return InAllotjament.Temp.ALTA;
-        } else{
+        } else {
             return InAllotjament.Temp.BAIXA;
         }
     }
